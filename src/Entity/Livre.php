@@ -30,6 +30,9 @@ class Livre
     #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'livres')]
     private Collection $genres;
 
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    private ?Auteur $auteur = null;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
@@ -111,6 +114,18 @@ class Livre
         if ($this->genres->removeElement($genre)) {
             $genre->removeLivre($this);
         }
+
+        return $this;
+    }
+
+    public function getAuteur(): ?Auteur
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?Auteur $auteur): static
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }
