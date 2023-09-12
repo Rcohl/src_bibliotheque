@@ -89,30 +89,6 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         $this->manager->flush();
     }
 
-    // ! N'INJECTE PAS L'ADMIN DANS LA BASE DE DONNÉE !
-    // public function loadUsers(): void
-    // {
-    //     $datas = [
-    //         [
-    //             'email' => 'admin@example.com',
-    //             'roles' => ['ROLE_ADMIN'],
-    //             'password' => '123',
-    //             'enabled' => true,
-    //         ],
-    //     ];
-
-    //     foreach ($datas as $data) {
-    //         $user = new User();
-    //         $user->setEmail($data['email']);
-    //         $password = $this->hasher->hashPassword($user, $data['password']);
-    //         $user->setPassword($password);
-    //         $user->setRoles($data['roles']);
-    //         $user->setEnabled($data['enabled']);
-
-    //         $this->manager->persist($user);
-    //     };
-    // }
-
     public function loadEmprunteurs(): void
     {
         //données statiques

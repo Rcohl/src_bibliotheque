@@ -29,6 +29,8 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
+
+        $this->loadAdmins();
     }
 
     public function loadAdmins(): void
@@ -49,6 +51,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             $password = $this->hasher->hashPassword($user, $data['password']);
             $user->setPassword($password);
             $user->setRoles($data['roles']);
+            $user->setEnabled($data['enabled']);
 
             $this->manager->persist($user);
         }
