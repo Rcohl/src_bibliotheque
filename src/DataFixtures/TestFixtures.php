@@ -14,6 +14,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory as FakerFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class TestFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -37,7 +38,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         $this->manager = $manager;
 
         $this->loadAuteurs();
-        // $this->loadEmprunts();
+        $this->loadEmprunts();
         $this->loadEmprunteurs();
         $this->loadGenres();
         $this->loadLivres();
@@ -87,6 +88,99 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
         $this->manager->flush();
     }
+
+    public function loadEmprunts(): void
+    {
+        $repository = $this->manager->getRepository(Emprunteur::class);
+        $emprunteurs = $repository->findAll();
+
+        $firstEmprunteur = $repository->find(1);
+        $secondEmprunteur = $repository->find(2);
+        $thirdEmprunteur = $repository->find(3);
+
+        $repository = $this->manager->getRepository(Livre::class);
+        $livres = $repository->findAll();
+
+        $firstLivre = $repository->find(1);
+        $secondLivre = $repository->find(2);
+        $thirdLivre = $repository->find(3);
+
+        //données statiques
+        $datas = [
+            [
+                'dateEmprunt' => new DateTime('2020-02-01 10:00:00'),
+                'dateRetour' => new DateTime('2020-03-01 10:00:00'),
+                'emprunteur' => $firstEmprunteur,
+                'livre' => $firstLivre,
+            ],
+            [
+                'dateEmprunt' => new DateTime('2020-03-01 10:00:00'),
+                'dateRetour' => new DateTime('2020-04-01 10:00:00'),
+                'emprunteur' => $secondEmprunteur,
+                'livre' => $secondLivre,
+            ],
+            [
+                'dateEmprunt' => new DateTime('2020-04-01 10:00:00'),
+                'dateRetour' => null,
+                'emprunteur' => $thirdEmprunteur,
+                'livre' => $thirdLivre,
+            ],
+        ];
+
+        foreach ($datas as $data) {
+            $emprunt = new Emprunt();
+            $emprunt->setDateEmprunt($data['dateEmprunt']);
+            $emprunt->setDateRetour($data['dateRetour']);
+
+            $emprunt->setEmprunteur($data['emprunteur']);
+            $emprunt->setLivre($data['livre']);
+
+            $this->manager->persist($emprunt);
+        }
+
+        //données dynamiques
+        for ($i = 0; $i < 200; $i++) {
+            $emprunt = new Emprunt();
+            $emprunt->setDateEmprunt($this->faker->dateTimeBetween('-3 months', '-2 months'));
+            $emprunt->setDateRetour($this->faker->dateTimeBetween('-2 months', '-1 months'));
+
+            $emprunteur = $this->faker->randomElement($emprunteurs);
+            $emprunt->setEmprunteur($emprunteur);
+
+            $livre = $this->faker->randomElement($livres);
+            $emprunt->setLivre($livre);
+
+            $this->manager->persist($emprunt);
+        }
+
+
+        $this->manager->flush();
+    }
+
+
+    // ! N'INJECTE PAS L'ADMIN DANS LA BASE DE DONNÉE !
+    // public function loadUsers(): void
+    // {
+    //     $datas = [
+    //         [
+    //             'email' => 'admin@example.com',
+    //             'roles' => ['ROLE_ADMIN'],
+    //             'password' => '123',
+    //             'enabled' => true,
+    //         ],
+    //     ];
+
+    //     foreach ($datas as $data) {
+    //         $user = new User();
+    //         $user->setEmail($data['email']);
+    //         $password = $this->hasher->hashPassword($user, $data['password']);
+    //         $user->setPassword($password);
+    //         $user->setRoles($data['roles']);
+    //         $user->setEnabled($data['enabled']);
+
+    //         $this->manager->persist($user);
+    //     };
+    // }
 
     public function loadEmprunteurs(): void
     {
@@ -244,6 +338,14 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         $lambertArmand = $repository->find(3);
         $moitessierThomas = $repository->find(4);
 
+        $repository = $this->manager->getRepository(Genre::class);
+        $genres = $repository->findAll();
+
+        $poesie = $repository->find(1);
+        $nouvelle = $repository->find(2);
+        $romanHistorique = $repository->find(3);
+        $romanAmour = $repository->find(4);
+
         //données statiques
         $datas = [
             [
@@ -252,6 +354,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'nombrePages' => 100,
                 'codeIsbn' => '9785786930024',
                 'auteur' => $auteurInconnu,
+                'genre' => $poesie,
             ],
             [
                 'titre' => 'Consectetur adipiscing elit',
@@ -259,6 +362,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'nombrePages' => 150,
                 'codeIsbn' => '9783817260935',
                 'auteur' => $cartierHugues,
+                'genre' => $nouvelle,
             ],
             [
                 'titre' => 'Mihi quidem Antiochum',
@@ -266,6 +370,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'nombrePages' => 200,
                 'codeIsbn' => '9782020493727',
                 'auteur' => $lambertArmand,
+                'genre' => $romanHistorique,
             ],
             [
                 'titre' => 'Quem audis satis belle',
@@ -273,6 +378,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'nombrePages' => 250,
                 'codeIsbn' => '9794059561353',
                 'auteur' => $moitessierThomas,
+                'genre' => $romanAmour,
             ],
         ];
 
@@ -285,6 +391,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $livre->setCodeIsbn($data['codeIsbn']);
 
             $livre->setAuteur($data['auteur']);
+            $livre->addGenre($data['genre']);
 
             $this->manager->persist($livre);
         }
@@ -303,6 +410,9 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
             $auteur = $this->faker->randomElement($auteurs);
             $livre->setAuteur($auteur);
+
+            $genre = $this->faker->randomElement($genres);
+            $livre->addGenre($genre);
 
             $this->manager->persist($livre);
         }
