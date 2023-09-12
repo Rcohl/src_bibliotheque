@@ -38,10 +38,10 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         $this->manager = $manager;
 
         $this->loadAuteurs();
-        $this->loadEmprunts();
         $this->loadEmprunteurs();
         $this->loadGenres();
         $this->loadLivres();
+        $this->loadEmprunts();
     }
 
     public function loadAuteurs(): void
@@ -88,75 +88,6 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
         $this->manager->flush();
     }
-
-    public function loadEmprunts(): void
-    {
-        $repository = $this->manager->getRepository(Emprunteur::class);
-        $emprunteurs = $repository->findAll();
-
-        $firstEmprunteur = $repository->find(1);
-        $secondEmprunteur = $repository->find(2);
-        $thirdEmprunteur = $repository->find(3);
-
-        $repository = $this->manager->getRepository(Livre::class);
-        $livres = $repository->findAll();
-
-        $firstLivre = $repository->find(1);
-        $secondLivre = $repository->find(2);
-        $thirdLivre = $repository->find(3);
-
-        //données statiques
-        $datas = [
-            [
-                'dateEmprunt' => new DateTime('2020-02-01 10:00:00'),
-                'dateRetour' => new DateTime('2020-03-01 10:00:00'),
-                'emprunteur' => $firstEmprunteur,
-                'livre' => $firstLivre,
-            ],
-            [
-                'dateEmprunt' => new DateTime('2020-03-01 10:00:00'),
-                'dateRetour' => new DateTime('2020-04-01 10:00:00'),
-                'emprunteur' => $secondEmprunteur,
-                'livre' => $secondLivre,
-            ],
-            [
-                'dateEmprunt' => new DateTime('2020-04-01 10:00:00'),
-                'dateRetour' => null,
-                'emprunteur' => $thirdEmprunteur,
-                'livre' => $thirdLivre,
-            ],
-        ];
-
-        foreach ($datas as $data) {
-            $emprunt = new Emprunt();
-            $emprunt->setDateEmprunt($data['dateEmprunt']);
-            $emprunt->setDateRetour($data['dateRetour']);
-
-            $emprunt->setEmprunteur($data['emprunteur']);
-            $emprunt->setLivre($data['livre']);
-
-            $this->manager->persist($emprunt);
-        }
-
-        //données dynamiques
-        for ($i = 0; $i < 200; $i++) {
-            $emprunt = new Emprunt();
-            $emprunt->setDateEmprunt($this->faker->dateTimeBetween('-3 months', '-2 months'));
-            $emprunt->setDateRetour($this->faker->dateTimeBetween('-2 months', '-1 months'));
-
-            $emprunteur = $this->faker->randomElement($emprunteurs);
-            $emprunt->setEmprunteur($emprunteur);
-
-            $livre = $this->faker->randomElement($livres);
-            $emprunt->setLivre($livre);
-
-            $this->manager->persist($emprunt);
-        }
-
-
-        $this->manager->flush();
-    }
-
 
     // ! N'INJECTE PAS L'ADMIN DANS LA BASE DE DONNÉE !
     // public function loadUsers(): void
@@ -419,4 +350,73 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
         $this->manager->flush();
     }
+
+    public function loadEmprunts(): void
+    {
+        $repository = $this->manager->getRepository(Emprunteur::class);
+        $emprunteurs = $repository->findAll();
+
+        $firstEmprunteur = $repository->find(1);
+        $secondEmprunteur = $repository->find(2);
+        $thirdEmprunteur = $repository->find(3);
+
+        $repository = $this->manager->getRepository(Livre::class);
+        $livres = $repository->findAll();
+
+        $firstLivre = $repository->find(1);
+        $secondLivre = $repository->find(2);
+        $thirdLivre = $repository->find(3);
+
+        //données statiques
+        $datas = [
+            [
+                'dateEmprunt' => new DateTime('2020-02-01 10:00:00'),
+                'dateRetour' => new DateTime('2020-03-01 10:00:00'),
+                'emprunteur' => $firstEmprunteur,
+                'livre' => $firstLivre,
+            ],
+            [
+                'dateEmprunt' => new DateTime('2020-03-01 10:00:00'),
+                'dateRetour' => new DateTime('2020-04-01 10:00:00'),
+                'emprunteur' => $secondEmprunteur,
+                'livre' => $secondLivre,
+            ],
+            [
+                'dateEmprunt' => new DateTime('2020-04-01 10:00:00'),
+                'dateRetour' => null,
+                'emprunteur' => $thirdEmprunteur,
+                'livre' => $thirdLivre,
+            ],
+        ];
+
+        foreach ($datas as $data) {
+            $emprunt = new Emprunt();
+            $emprunt->setDateEmprunt($data['dateEmprunt']);
+            $emprunt->setDateRetour($data['dateRetour']);
+
+            $emprunt->setEmprunteur($data['emprunteur']);
+            $emprunt->setLivre($data['livre']);
+
+            $this->manager->persist($emprunt);
+        }
+
+        //données dynamiques
+        for ($i = 0; $i < 200; $i++) {
+            $emprunt = new Emprunt();
+            $emprunt->setDateEmprunt($this->faker->dateTimeBetween('-3 months', '-2 months'));
+            $emprunt->setDateRetour($this->faker->dateTimeBetween('-2 months', '-1 months'));
+
+            $emprunteur = $this->faker->randomElement($emprunteurs);
+            $emprunt->setEmprunteur($emprunteur);
+
+            $livre = $this->faker->randomElement($livres);
+            $emprunt->setLivre($livre);
+
+            $this->manager->persist($emprunt);
+        }
+
+
+        $this->manager->flush();
+    }
+
 }
