@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ECF Symfony
+{% endblock %}
+
+{% block body %}
+
+	{% block content %}
+		<h1>Liste des livres</h1>
+		<ul>
+			{% for livre in livres %}
+				<li>{{ livre.titre }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>Données du livre 1</h2>
+		<ul>
+			<li>{{ firstLivre.id }}</li>
+			<li>{{ firstLivre.titre }}</li>
+			<li>{{ firstLivre.anneeEdition}}</li>
+			<li>{{ firstLivre.nombrePages }}</li>
+			<li>{{ firstLivre.codeIsbn }}</li>
+		</ul>
+
+		<h2>liste des livres dont le titre contient le mot clé 'lorem'</h2>
+		<ul>
+			{% for livre in livreTitre %}
+				<li>id:{{ livre.id }}
+					titre:{{ livre.titre }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>liste des livres dont l'auteur à l'id 2</h2>
+		<ul>
+			{% for livre in auteurLivres %}
+				<li>id:{{ livre.id }}
+					titre:{{ livre.titre }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>liste des livres dont le genre contient le mot clé 'roman'</h2>
+		<ul>
+			{% for livre in livreRoman %}
+				<li>id:{{ livre.id }}
+					titre:{{ livre.titre }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>Nouveau livre</h2>
+		<ul>
+
+			<li>id:
+				{{ newLivre.id }}</li>
+			<li>titre:
+				{{ newLivre.titre }}</li>
+			<li>Année édition:
+				{{ newLivre.anneeEdition }}</li>
+			<li>Nombre de pages:
+				{{ newLivre.nombrePages }}</li>
+			<li>Code ISBN:
+				{{ newLivre.codeIsbn }}</li>
+			<li>Auteur:
+				{{ auteur3.nom }}
+				{{ auteur3.prenom }}</li>
+			<li>Genre:
+				{{ genre6.nom }}</li>
+		</ul>
+
+		<h2>Modification du livre dont l'id est 2</h2>
+		<ul>
+			<li>Id:{{ livre2.id }}</li>
+			<li>Titre:{{ livre2.titre }}</li>
+			<li>Genre:{{ genre5.nom }}</li>
+		</ul>
+	{% endblock %}
+
+{% endblock %}

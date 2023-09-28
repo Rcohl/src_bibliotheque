@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ECF Symfony
+{% endblock %}
+
+{% block body %}
+
+	{% block content %}
+		<h1>Liste des utilisateurs</h1>
+		<ul>
+			{% for user in users %}
+				<li>{{ user.email }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>Données de l'utilisateur 1</h2>
+		<ul>
+			<li>{{ firstUser.id }}</li>
+			<li>{{ firstUser.email }}</li>
+			<li>{{ (firstUser.roles)|join }}</li>
+			<li>{{ firstUser.password }}</li>
+			<li>{{ userEmail.enabled }}</li>
+		</ul>
+
+		<h2>Données de l'utilisateur dont l'email est 'foo.foo@example.com</h2>
+		<ul>
+			<li>{{ userEmail.id }}</li>
+			<li>{{ userEmail.email }}</li>
+			<li>{{ (userEmail.roles)|join }}</li>
+			<li>{{ userEmail.password }}</li>
+			<li>{{ userEmail.enabled }}</li>
+		</ul>
+
+		<h2>liste des utilisateurs dont l'attribut 'roles' contient le mot clé 'ROLE_USER'</h2>
+		<ul>
+			{% for user in userRole %}
+				<li>id:{{ user.id }}
+					email:{{ user.email }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>liste des utilisateurs dont l'attribut 'enabled' est égale à false (0)</h2>
+		<ul>
+			{% for user in userEnabled %}
+				<li>id:{{ user.id }}
+					email:{{ user.email }}</li>
+			{% endfor %}
+		</ul>
+	{% endblock %}
+
+{% endblock %}

@@ -76,10 +76,8 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
         //données dynamiques
         for ($i = 0; $i < 500; $i++) {
             $auteur = new Auteur();
-            $words = random_int(1, 3);
-            $auteur->setNom($this->faker->unique()->sentence($words));
-            $words = random_int(1, 3);
-            $auteur->setPrenom($this->faker->sentence($words));
+            $auteur->setNom($this->faker->lastName());
+            $auteur->setPrenom($this->faker->firstName());
 
             $this->manager->persist($auteur);
         }
@@ -100,6 +98,8 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'password' => '123',
                 'roles' => ['ROLE_USER'],
                 'enabled' => true,
+                'created_at' => '2020-12-01',
+                'updated_at' => '2021-05-05',
             ],
             [
                 'nom' => 'bar',
@@ -109,6 +109,8 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'password' => '123',
                 'roles' => ['ROLE_USER'],
                 'enabled' => false,
+                'created_at' => '2021-01-12',
+                'updated_at' => '2021-06-05',
             ],
             [
                 'nom' => 'baz',
@@ -118,11 +120,14 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
                 'password' => '123',
                 'roles' => ['ROLE_USER'],
                 'enabled' => true,
+                'created_at' => '2021-02-08',
+                'updated_at' => '2022-10-10',
             ],
         ];
 
         foreach ($datas as $data) {
             $user = new User();
+
             $user->setEmail($data['email']);
             $password = $this->hasher->hashPassword($user, $data['password']);
             $user->setPassword($password);
@@ -131,10 +136,17 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
             $this->manager->persist($user);
 
+
+
+            $dateCreation = $this->faker->dateTimeBetween('2020-12-01', '2023-09-20');
+            $dateUpdate = $this->faker->dateTimeBetween('2021-01-01', '2023-09-25');
+            
             $emprunteur = new Emprunteur();
             $emprunteur->setNom($data['nom']);
             $emprunteur->setPrenom($data['prenom']);
             $emprunteur->setTel($data['tel']);
+            $emprunteur->setCreatedAt($dateCreation);
+            $emprunteur->setUpdatedAt($dateUpdate);
             $emprunteur->setUser($user);
 
             $this->manager->persist($emprunteur);
@@ -149,14 +161,20 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $password = $this->hasher->hashPassword($user, '123');
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
-            $user->setEnabled('enabled');
+            $user->setEnabled($this->faker->boolean());
+            
+            $user->setEmprunteur($emprunteur);
+
+
 
             $this->manager->persist($user);
 
             $emprunteur = new Emprunteur();
             $emprunteur->setNom($this->faker->lastName());
             $emprunteur->setPrenom($this->faker->firstName());
-            $emprunteur->setTel(123456789);
+            $emprunteur->setTel($this->faker->phoneNumber());
+            $emprunteur->setCreatedAt($this->faker->dateTimeBetween('-8 months', '-6 months'));
+            $emprunteur->setUpdatedAt($this->faker->dateTimeBetween('-5 months', '-1 months'));
 
             $emprunteur->setUser($user);
 
@@ -393,5 +411,4 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
         $this->manager->flush();
     }
-
 }

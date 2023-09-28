@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ECF Symfony
+{% endblock %}
+
+{% block body %}
+
+	{% block content %}
+		<h1>Liste des emprunteurs</h1>
+		<ul>
+			{% for emprunteur in emprunteurs %}
+				<li>Nom:
+					{{ emprunteur.nom }}
+					Prénom:
+					{{ emprunteur.prenom }}</li>
+				<li>Tél:
+					{{ emprunteur.tel }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>Données de l'emprunteur dont l'id est 3</h2>
+		<ul>
+			<li>Nom:
+				{{ emprunteur3.nom }}
+				Prénom:
+				{{ emprunteur3.prenom }}</li>
+			<li>Tél:
+				{{ emprunteur3.tel }}</li>
+		</ul>
+
+		<h2>Données de l'emprunteur relié à l'user dont l'id est 3</h2>
+		<ul>
+			<li>Nom:
+				{{ userEmprunteur.nom }}
+				Prénom:
+				{{ userEmprunteur.prenom }}</li>
+			<li>Tél:
+				{{ userEmprunteur.tel }}</li>
+		</ul>
+
+		<h2>Données des emprunteurs dont le nom ou le prénom contient le mot clé 'foo'</h2>
+		<ul>
+			{% for emprunteur in emprunteurFoo %}
+				<li>Nom:
+					{{ emprunteur.nom }}
+					Prénom:
+					{{ emprunteur.prenom }}</li>
+				<li>Tél:
+					{{ emprunteur.tel }}</li>
+			{% endfor %}
+		</ul>
+
+		<h2>Données des emprunteurs dont le téléphone contient le mot clé '1234'</h2>
+		<ul>
+			{% for emprunteur in telEmprunteur %}
+				<li>Nom:
+					{{ emprunteur.nom }}
+					Prénom:
+					{{ emprunteur.prenom }}</li>
+				<li>Tél:
+					{{ emprunteur.tel }}</li>
+			{% endfor %}
+		</ul>
+	{% endblock %}
+
+{% endblock %}
