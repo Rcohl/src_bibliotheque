@@ -140,7 +140,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
 
             $dateCreation = $this->faker->dateTimeBetween('2020-12-01', '2023-09-20');
             $dateUpdate = $this->faker->dateTimeBetween('2021-01-01', '2023-09-25');
-            
+
             $emprunteur = new Emprunteur();
             $emprunteur->setNom($data['nom']);
             $emprunteur->setPrenom($data['prenom']);
@@ -162,7 +162,7 @@ class TestFixtures extends Fixture implements FixtureGroupInterface
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
             $user->setEnabled($this->faker->boolean());
-            
+
             $user->setEmprunteur($emprunteur);
 
 

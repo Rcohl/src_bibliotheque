@@ -198,6 +198,8 @@ class TestController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // // récupération de la liste des emprunteurs dont la date de création est antérieur au 01/03/2021
+
         return $this->render('test/emprunteur.html.twig', [
             'emprunteurs' => $emprunteurs,
             'emprunteur3' => $emprunteur3,
