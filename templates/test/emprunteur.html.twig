@@ -61,6 +61,15 @@
 					{{ emprunteur.tel }}</li>
 			{% endfor %}
 		</ul>
+
+		<h2>Listes des emprunteurs dont la date de création est antérieure au 01/03/2021</h2>
+		{% for emprunteur in emprunteurs %}
+			<ul>
+				<li>{{ emprunteur.nom }}</li>
+				<li>{{ emprunteur.prenom }}</li>
+				<li>{{ emprunteur.createdAt|date('d/m/Y') }}</li>
+			</ul>
+		{% endfor %}
 	{% endblock %}
 
 {% endblock %}

@@ -26,7 +26,6 @@ class Emprunteur
     #[ORM\Column(length: 190)]
     private ?string $tel = null;
 
-
     #[ORM\OneToMany(mappedBy: 'emprunteur', targetEntity: Emprunt::class)]
     private Collection $emprunts;
 

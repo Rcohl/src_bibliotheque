@@ -198,7 +198,16 @@ class TestController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        // // récupération de la liste des emprunteurs dont la date de création est antérieur au 01/03/2021
+        // récupération de la liste des emprunteurs dont la date de création est antérieur au 01/03/2021
+
+        $dateLimite = new \DateTime('2021-03-01');
+        $createdAt = $emprunteurRepository->createQueryBuilder('e')
+            ->where('e.createdAt < :dateLimite')
+            ->setParameter('dateLimite', $dateLimite)
+            ->orderBy('e.nom', 'ASC')
+            ->addOrderBy('e.prenom', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('test/emprunteur.html.twig', [
             'emprunteurs' => $emprunteurs,
@@ -206,6 +215,7 @@ class TestController extends AbstractController
             'userEmprunteur' => $userEmprunteur,
             'emprunteurFoo' => $emprunteurFoo,
             'telEmprunteur' => $telEmprunteur,
+            'createdAt' => $createdAt,
         ]);
     }
 }
