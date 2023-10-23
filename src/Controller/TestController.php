@@ -218,4 +218,16 @@ class TestController extends AbstractController
             'createdAt' => $createdAt,
         ]);
     }
+
+    #[Route('/emprunt', name: 'app_test_emprunt')]
+    public function emprunt(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $empruntRepository = $em->getRepository(Emprunt::class);
+
+
+        return $this->render('test/emprunt.html.twig', [
+
+        ]);
+    }
 }
