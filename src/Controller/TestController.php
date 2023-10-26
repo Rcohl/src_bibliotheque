@@ -225,9 +225,75 @@ class TestController extends AbstractController
         $em = $doctrine->getManager();
         $empruntRepository = $em->getRepository(Emprunt::class);
 
+        // la liste des 10 derniers emprunts par ordre chronologique décroissant
+        $derniersEmprunts = $empruntRepository->findBy([], ['dateEmprunt' => 'DESC'], 10);
+
+        // la liste des emprunts dont l'emprunteur est l'emprunteur dont l'id est 2
+
+        $emprunteur2 = $em->getRepository(Emprunteur::class)->find(2);
+        $emprunts2 = $empruntRepository->findBy(['emprunteur' => $emprunteur2], ['dateEmprunt' => 'ASC']);
+
+        // la liste des emprunts du livre dont l'id est 3
+        $livre3 = $em->getRepository(Livre::class)->find(3);
+        $emprunts3 = $empruntRepository->findBy(['livre' => $livre3], ['dateEmprunt' => 'DESC']);
+
+        // la liste des 10 derniers emprunts qui ont été retournés
+        $empruntsReturned = $empruntRepository->findBy([], ['dateRetour' => 'DESC'], 10);
+
+        // la liste des emprunts qui non pas encore été retournés
+        $empruntsNotReturned = $empruntRepository->findBy(['dateRetour' => null], ['dateEmprunt' => 'ASC']);
+
+        // ajouter un nouvel emprunt
+        // Récupérez l'emprunteur avec l'id 1 (foo foo)
+        $emprunteurFoo = $em->getRepository(Emprunteur::class)->find(1);
+
+        // Récupérez le livre avec l'id 1 (Lorem ipsum dolor sit amet)
+        $livre1 = $em->getRepository(Livre::class)->find(1);
+
+        // Créez un nouvel emprunt
+        $newEmprunt = new Emprunt();
+        $newEmprunt->setDateEmprunt(new \DateTime('2020-12-01 16:00:00'));
+        $newEmprunt->setEmprunteur($emprunteurFoo);
+        $newEmprunt->setLivre($livre1);
+
+        $em->persist($newEmprunt);
+        $em->flush();
+
+        // modifier la date de retour de l'emprunt dont l'id est 3
+        // Récupérez l'emprunt avec l'ID 3
+        $thirdEmprunt = $em->getRepository(Emprunt::class)->find(3);
+
+        // Mettez à jour la date de retour
+        $newReturnedDate = new \DateTime('2020-05-01 10:00:00');
+        $thirdEmprunt->setDateRetour($newReturnedDate);
+
+        // Persistez les modifications
+        $em->flush();
+
+        // supprimer l'emprunt dont l'id est 42
+        // Récupérez l'emprunt avec l'ID 42
+        $emprunt42 = $em->getRepository(Emprunt::class)->find(42);
+
+        // suppression de l'emprunt
+        if ($emprunt42) {
+            $em->remove($emprunt42);
+            $em->flush();
+        }
+
 
         return $this->render('test/emprunt.html.twig', [
-
+            'derniersEmprunts' => $derniersEmprunts,
+            'emprunts2' => $emprunts2,
+            'emprunteur2' => $emprunteur2,
+            'emprunts3' => $emprunts3,
+            'livre3' => $livre3,
+            'empruntsReturned' => $empruntsReturned,
+            'empruntsNotReturned' => $empruntsNotReturned,
+            'newEmprunt' => $newEmprunt,
+            'livre1' => $livre1,
+            'emprunteurFoo' => $emprunteurFoo,
+            'thirdEmprunt' => $thirdEmprunt,
+            'newReturnedDate' => $newReturnedDate,
         ]);
     }
 }

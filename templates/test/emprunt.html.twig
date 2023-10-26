@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ECF Symfony
+{% endblock %}
+
+{% block body %}
+
+	{% block content %}
+		<h1>Liste des 10 derniers emprunts</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in derniersEmprunts %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>Liste des empunts dont l'emprunteur possède l'id 2</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>ID Emprunteur</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in emprunts2 %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+						<td>{{ emprunteur2.id }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>Liste des empunts dont le livre possède l'id 3</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>ID Livre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in emprunts3 %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+						<td>{{ livre3.id }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>Liste des 10 derniers emprunts retournés</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>Date retour</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in empruntsReturned %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+						<td>{{ emprunt.dateRetour|date('Y-m-d H:i:s') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>Liste des emprunts non retournés</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in empruntsNotReturned %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>L'unique emprunt du livre dont l'id est 3</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>ID Livre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for emprunt in emprunts3 %}
+					<tr>
+						<td>{{ emprunt.id }}</td>
+						<td>{{ emprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+						<td>{{ livre3.id }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<h1>Nouvel emprunt</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>ID Livre</th>
+					<th>ID Emprunteur</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ newEmprunt.id }}</td>
+					<td>{{ newEmprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+					<td>{{ livre1.id }}</td>
+					<td>{{ emprunteurFoo.id }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h1>Modification de l'emprunt dont l'id est 3</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date d'emprunt</th>
+					<th>Date de retour</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ thirdEmprunt.id }}</td>
+					<td>{{ thirdEmprunt.dateEmprunt|date('Y-m-d H:i:s') }}</td>
+					<td>{{ thirdEmprunt.dateRetour|date('Y-m-d H:i:s') }}</td>
+				</tr>
+			</tbody>
+		</table>
+	{% endblock %}
+
+{% endblock %}
