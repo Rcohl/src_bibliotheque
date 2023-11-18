@@ -1,0 +1,22 @@
+@import "custom.scss";
+
+body {
+    background-color: $primary;
+}
+
+.form_scrollable-checkboxes {
+    height: 10rem;
+    overflow: scroll;
+}
+
+.d-none {
+    display: none;
+}
+
+form {
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+}

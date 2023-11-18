@@ -1,0 +1,16 @@
+@import "bootstrap/scss/bootstrap";
+
+// code de customisation
+
+$primary: rgb(28, 76, 178);
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
